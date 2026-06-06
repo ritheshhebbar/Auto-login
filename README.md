@@ -20,7 +20,10 @@ WEBOPENER/
 
 ## ⚡ Installation & Setup
 
-1. **Prerequisites**: Ensure you have [Python 3](https://www.python.org/downloads/) installed. During installation, make sure to check the box **"Add Python to PATH"**.
+1. **Prerequisites**: 
+   * Ensure you have [Python 3](https://www.python.org/downloads/) installed. (Make sure to check the box **"Add Python to PATH"** during installation).
+   * Ensure you have the **Google Chrome** browser installed. 
+   * *(Note: Chrome webdriver setup and package dependencies like `selenium` are handled automatically by `setup.bat`.)*
 2. **Clone / Download** this repository to your machine.
 3. **Configure Credentials**: Open [msrit_login.py](file:///c:/Users/kssha/Documents/WEBOPENER/msrit_login.py) in any text editor and verify/update your USN and Date of Birth at the top of the file:
    ```python
