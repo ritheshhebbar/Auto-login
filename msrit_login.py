@@ -87,28 +87,47 @@ def login(name, url):
             By.CSS_SELECTOR, 'input[type="submit"][value="Login"]'
         )
         submit_btn.click()
+        print("  Login clicked. Waiting for dashboard to load...")
 
-        print("  Login submitted! Waiting to close warning modal...")
+        # --- Wait & Close Announcement Popup ---
+        # Check for the popup and close button periodically for up to 8 seconds
+        popup_closed = False
+        start_time = time.time()
+        
+        while time.time() - start_time < 8:
+            # Common patterns for the CLOSE button/link in the popup
+            selectors = [
+                (By.XPATH, "//*[text()='CLOSE']"),
+                (By.XPATH, "//*[contains(text(), 'CLOSE')]"),
+                (By.XPATH, "//button[contains(text(), 'CLOSE')]"),
+                (By.XPATH, "//a[contains(text(), 'CLOSE')]"),
+                (By.CSS_SELECTOR, ".uk-modal-close"),
+                (By.CSS_SELECTOR, "[uk-close]")
+            ]
+            
+            for by, selector in selectors:
+                try:
+                    elements = driver.find_elements(by, selector)
+                    for el in elements:
+                        if el.is_displayed() and el.is_enabled():
+                            el.click()
+                            print("  Successfully closed the announcement popup!")
+                            popup_closed = True
+                            break
+                except Exception:
+                    pass
+                if popup_closed:
+                    break
+            
+            if popup_closed:
+                break
+                
+            time.sleep(0.5)
 
-        # --- Auto-close warning modal ---
-        try:
-            # Look for button/link with text 'CLOSE' or elements with modal-close classes
-            close_xpath = (
-                "//button[contains(translate(., 'close', 'CLOSE'), 'CLOSE')] | "
-                "//a[contains(translate(., 'close', 'CLOSE'), 'CLOSE')] | "
-                "//*[contains(@class, 'modal-close')] | "
-                "//*[contains(@class, 'uk-modal-close')]"
-            )
-            # Wait up to 10 seconds for the modal close button to be clickable
-            close_btn = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, close_xpath))
-            )
-            close_btn.click()
-            print("  Successfully closed the warning modal automatically!")
-        except Exception:
-            print("  No warning modal appeared (or it was already closed).")
+        if not popup_closed:
+            print("  No popup detected (or it was already closed/didn't appear).")
 
-        print("  Browser will stay open. Exiting script.\n")
+        print("  Finished! You can now use the browser.\n")
 
     except Exception as e:
         print(f"\n  ERROR: {e}")
