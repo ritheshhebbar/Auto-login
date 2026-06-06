@@ -88,8 +88,27 @@ def login(name, url):
         )
         submit_btn.click()
 
-        print("  Login submitted! Browser will stay open.")
-        print("  This script will now exit.\n")
+        print("  Login submitted! Waiting to close warning modal...")
+
+        # --- Auto-close warning modal ---
+        try:
+            # Look for button/link with text 'CLOSE' or elements with modal-close classes
+            close_xpath = (
+                "//button[contains(translate(., 'close', 'CLOSE'), 'CLOSE')] | "
+                "//a[contains(translate(., 'close', 'CLOSE'), 'CLOSE')] | "
+                "//*[contains(@class, 'modal-close')] | "
+                "//*[contains(@class, 'uk-modal-close')]"
+            )
+            # Wait up to 10 seconds for the modal close button to be clickable
+            close_btn = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, close_xpath))
+            )
+            close_btn.click()
+            print("  Successfully closed the warning modal automatically!")
+        except Exception:
+            print("  No warning modal appeared (or it was already closed).")
+
+        print("  Browser will stay open. Exiting script.\n")
 
     except Exception as e:
         print(f"\n  ERROR: {e}")
