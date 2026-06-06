@@ -16,9 +16,9 @@ from selenium.webdriver.chrome.options import Options
 # ============================================================
 # HARDCODED CREDENTIALS — edit these if your details change
 # ============================================================
-USN = "1MS23IS049"
-DOB_DAY = "22 "    # trailing space matches the portal's option values
-DOB_MONTH = "12"   # 12 = December
+USN = "1MS23IS040"
+DOB_DAY = "15 "    # trailing space matches the portal's option values
+DOB_MONTH = "01"   # 12 = December
 DOB_YEAR = "2005"
 
 # Portal URLs
